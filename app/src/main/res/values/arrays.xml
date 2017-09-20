@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="main_grid_icon">
+        <item >
+            @drawable/sjfd
+        </item>
+        <item >
+            @drawable/srlj
+        </item>
+        <item >
+            @drawable/rjgj
+        </item>
+        <item >
+            @drawable/jcgl
+        </item>
+        <item >
+            @drawable/lltj
+        </item>
+        <item >
+            @drawable/sjsd
+        </item>
+        <item >
+            @drawable/hcql
+        </item>
+        <item >
+            @drawable/cygj
+        </item>
+    </array>
+</resources>

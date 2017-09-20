@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">MobileGuard</string>
+
+    <array name="main_grid_title">
+        <item>
+            Mobile Security
+        </item>
+        <item>
+            Telecom Safe
+        </item>
+        <item>
+            App Manage
+        </item>
+        <item>
+            Thread Manage
+        </item>
+        <item>
+            Data Analysis
+        </item>
+        <item>
+            AntiVirus
+        </item>
+        <item>
+            Cashe Clean
+        </item>
+        <item>
+            Advanced Tools
+        </item>
+    </array>
+
+    <array name="main_grid_des">
+        <item>
+            Locate mobile
+        </item>
+        <item>
+            Block numbers
+        </item>
+        <item>
+            Manage Appware
+        </item>
+        <item>
+            Manage tasks
+        </item>
+        <item>
+            Know your data
+        </item>
+        <item>
+            Virus killer
+        </item>
+        <item>
+            Speed up system
+        </item>
+        <item>
+            Tools omnibus
+        </item>
+    </array>
+
+</resources>

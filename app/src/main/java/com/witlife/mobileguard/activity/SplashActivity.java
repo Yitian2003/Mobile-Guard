@@ -29,6 +29,7 @@ import com.witlife.mobileguard.bean.Model;
 import com.witlife.mobileguard.bean.UpdateBean;
 import com.witlife.mobileguard.common.Contant;
 import com.witlife.mobileguard.http.OkHttpHelper;
+import com.witlife.mobileguard.utils.SPUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,6 +52,7 @@ public class SplashActivity extends AppCompatActivity {
     public static final int TO_MAIN = 1000;
     private static final int DOWNLOAD_APK_SUCCESS = 1001;
     private static final int DOWNLOAD_APK_FAIL = 1002;
+
     @BindView(R.id.tv_version)
     TextView tvVersion;
     @BindView(R.id.rl_layout)
@@ -62,8 +64,7 @@ public class SplashActivity extends AppCompatActivity {
     private UpdateBean updateInfo;
 
     private ProgressDialog progressDialog;
-    /*private int versionCode;
-    private int serverVersionCode;*/
+    private int currentVersionCode = 1;
 
     private Handler handler = new Handler(){
         @Override
@@ -88,10 +89,8 @@ public class SplashActivity extends AppCompatActivity {
                     toMain();
                     break;
             }
-
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +102,19 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         unbinder = ButterKnife.bind(this);
 
-        //handler.sendEmptyMessageDelayed(TO_MAIN, 3000);
-
         doAnimation();
 
-        updateApk();
-
+        // check whether need to automatically update
+        startTime = System.currentTimeMillis();
+        currentVersionCode = getCurrentVersionCode();
+        if (SPUtils.getBoolean(this, Contant.AUTO_UPDATE, true)) {
+            updateApk();
+        } else {
+            toMain();
+        }
     }
 
     private void updateApk() {
-        startTime = System.currentTimeMillis();
 
         // connect server
         if (!isConneted()) {
@@ -148,7 +150,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void compareVersionCode(int serverVersionCode) {
         // compare versionCode
-        if (currentVersionCode() <  serverVersionCode){
+        if (currentVersionCode <  serverVersionCode){
             new AlertDialog.Builder(this)
                     .setTitle("Download New Version")
                     .setMessage(updateInfo.getDes())
@@ -284,7 +286,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private int currentVersionCode(){
+    private int getCurrentVersionCode(){
         PackageManager packageManager = getPackageManager();
         PackageInfo packageInfo;
         int versionCode = -1;

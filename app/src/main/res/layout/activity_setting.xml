@@ -37,8 +37,8 @@
                 android:layout_centerVertical="true"
                 android:textOn=""
                 android:textOff=""
-                android:checked="false"
-                android:background="@drawable/off"/>
+                android:checked="true"
+                android:background="@drawable/on"/>
 
             <!--<ImageView
                 android:id="@+id/iv_auto_update"

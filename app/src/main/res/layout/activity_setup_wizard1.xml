@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.witlife.mobileguard.activity.SetupWizard1Activity">
+
+    <TextView
+        style="@style/SubTitleStyle"
+        android:text="1.Welcome to Security Setup Wizard"
+        />
+
+    <TextView
+        style="@style/ContentStyle"
+
+        android:text="Your Mobile Guard"/>
+
+    <TextView
+        style="@style/ContentStyle"
+        android:drawableLeft="@drawable/dialog_title_default_icon"
+        android:text="Send alarm sms when SIM card change"/>
+
+    <TextView
+        style="@style/ContentStyle"
+        android:drawableLeft="@drawable/dialog_title_default_icon"
+        android:text="GPS track lost phone"/>
+
+    <TextView
+        style="@style/ContentStyle"
+        android:drawableLeft="@drawable/dialog_title_default_icon"
+        android:text="Remotely wipe mobile data"/>
+
+    <TextView
+        style="@style/ContentStyle"
+        android:drawableLeft="@drawable/dialog_title_default_icon"
+        android:text="Remotely lock screen"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/step_1"/>
+
+        <Button
+            style="@style/NextPageStyle"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_online"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_invisible"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

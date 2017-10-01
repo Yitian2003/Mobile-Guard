@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.witlife.mobileguard.R;
+import com.witlife.mobileguard.common.Contant;
+import com.witlife.mobileguard.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,8 +42,6 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.btn_address)
     ToggleButton btnAddress;
 
-    private SharedPreferences sp;
-
     @Override
     protected void initData() {
 
@@ -69,8 +69,7 @@ public class SettingActivity extends BaseActivity {
                 btnAutoUpdate.setChecked(!btnAutoUpdate.isChecked());
                 btnAutoUpdate.setBackgroundResource(btnAutoUpdate.isChecked() ? R.drawable.on : R.drawable.off);
 
-
-                sp.edit().putBoolean("auto_update", btnAutoUpdate.isChecked()).commit();
+                SPUtils.putBoolean(SettingActivity.this, Contant.AUTO_UPDATE, btnAutoUpdate.isChecked());
             }
         });
 
@@ -80,34 +79,29 @@ public class SettingActivity extends BaseActivity {
                 btnAddress.setChecked(!btnAddress.isChecked());
                 btnAddress.setBackgroundResource(btnAddress.isChecked() ? R.drawable.on : R.drawable.off);
 
-
-                sp.edit().putBoolean("address", btnAddress.isChecked()).commit();
+                SPUtils.putBoolean(SettingActivity.this, Contant.ADDRESS, btnAddress.isChecked());
             }
         });
 
         rlBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 btnBlock.setChecked(!btnBlock.isChecked());
                 btnBlock.setBackgroundResource(btnBlock.isChecked() ? R.drawable.on : R.drawable.off);
 
-
-                sp.edit().putBoolean("block", btnBlock.isChecked()).commit();
+                SPUtils.putBoolean(SettingActivity.this, Contant.BLOCK, btnBlock.isChecked());
             }
         });
     }
 
     private void initToggle() {
-        sp = getSharedPreferences("configure", Context.MODE_PRIVATE);
-        boolean isOn = sp.getBoolean("auto_update", false);
-        btnAutoUpdate.setChecked(isOn);
-        btnAutoUpdate.setBackgroundResource(isOn ? R.drawable.on : R.drawable.off);
-        isOn = sp.getBoolean("address", false);
-        btnAddress.setChecked(isOn);
-        btnAddress.setBackgroundResource(isOn ? R.drawable.on : R.drawable.off);
-        isOn = sp.getBoolean("block", false);
-        btnBlock.setChecked(isOn);
-        btnBlock.setBackgroundResource(isOn ? R.drawable.on : R.drawable.off);
+        btnAutoUpdate.setChecked(SPUtils.getBoolean(this, Contant.AUTO_UPDATE, true));
+        btnAutoUpdate.setBackgroundResource(btnAutoUpdate.isChecked() ? R.drawable.on : R.drawable.off);
+        btnAddress.setChecked(SPUtils.getBoolean(this, Contant.ADDRESS, false));
+        btnAddress.setBackgroundResource(btnAddress.isChecked() ? R.drawable.on : R.drawable.off);
+        btnBlock.setChecked(SPUtils.getBoolean(this, Contant.BLOCK, false));
+        btnBlock.setBackgroundResource(btnBlock.isChecked() ? R.drawable.on : R.drawable.off);
     }
 
     @Override

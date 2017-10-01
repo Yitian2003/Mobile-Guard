@@ -65,10 +65,4 @@ public abstract class BaseActivity extends AppCompatActivity{
         ActivityManager.getInstance().removeAll();
     }
 
-    /*public void saveSharePreference(){
-        SharedPreferences sp = getSharedPreferences("mobile_guard", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putString()
-    }*/
 }

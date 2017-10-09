@@ -1,6 +1,7 @@
 package com.witlife.mobileguard.activity;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -106,8 +107,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case 0:// mobile security
                 doSecurity();
                 break;
-
+            case 7:
+                advancedTools();
         }
+    }
+
+    private void advancedTools() {
+        startActivity(new Intent(this, AdvancedToolsActivity.class));
     }
 
     private void doSecurity() {

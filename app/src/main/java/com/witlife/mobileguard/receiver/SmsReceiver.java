@@ -1,7 +1,9 @@
 package com.witlife.mobileguard.receiver;
 
 import android.animation.ObjectAnimator;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -14,8 +16,14 @@ import com.witlife.mobileguard.service.LocationService;
 
 public class SmsReceiver extends BroadcastReceiver {
 
+    private DevicePolicyManager deviceManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        deviceManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName componentName = new ComponentName(context, AdminReceiver.class);
+
         Object[] objs = (Object[]) intent.getExtras().get("pdus");
 
         for(Object obj : objs){
@@ -36,8 +44,17 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 abortBroadcast();
             } else if(("#wipedata#").equals(messageBody)){
+                // wipe data
+                if(deviceManager.isAdminActive(componentName)){
+                    deviceManager.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
+                }
                 abortBroadcast();
             } else if(("#lockscreen#").equals(messageBody)){
+                // remotely lock screen
+                if(deviceManager.isAdminActive(componentName)){
+                    deviceManager.lockNow();
+                }
+
                 abortBroadcast();
             }
         }

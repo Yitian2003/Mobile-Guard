@@ -6,12 +6,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".MyApplication"
@@ -75,7 +78,15 @@
             android:exported="true" />
 
         <activity android:name=".activity.AdvancedToolsActivity" />
-        <activity android:name=".activity.SearchAddressActivity"></activity>
+        <activity android:name=".activity.SearchAddressActivity" />
+
+        <service
+            android:name=".service.AddressService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".activity.TelecomSafeActivity" />
+        <activity android:name=".activity.UpdateBlockListActivity"></activity>
     </application>
 
 </manifest>

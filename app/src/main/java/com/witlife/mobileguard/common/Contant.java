@@ -12,6 +12,7 @@ public class Contant {
     public static final String CONFIGURE = "CONFIGURE";
     public static final String AUTO_UPDATE = "auto_update";
     public static final String ADDRESS = "address";
+
     public static final String BLOCK = "block";
     public static final String PASSWORD = "password";
     public static final String FIRST_ENTER_SEC_SETUP = "first_enter_sec_setup";
@@ -19,4 +20,6 @@ public class Contant {
     public static final String SIM_SERIAL_NUMBER = "sim_serial_number";
     public static final String RELEVANT_MOBILE = "relevant_mobile";
     public static final String ENABLE_PROTECT = "enable_protect";
+
+    public static final String ADDRESS_STYLE = "address_style";
 }

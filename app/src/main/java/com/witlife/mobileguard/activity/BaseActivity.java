@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.witlife.mobileguard.common.ActivityManager;
 
@@ -19,6 +21,7 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends AppCompatActivity{
 
     private Unbinder unbinder;
+    private ImageView ivBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -1,9 +1,10 @@
 package com.witlife.mobileguard.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,10 +13,12 @@ import android.widget.ToggleButton;
 
 import com.witlife.mobileguard.R;
 import com.witlife.mobileguard.common.Contant;
+import com.witlife.mobileguard.service.AddressService;
 import com.witlife.mobileguard.utils.SPUtils;
+import com.witlife.mobileguard.utils.ServiceStatusUtils;
+import com.witlife.mobileguard.view.AddressDialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SettingActivity extends BaseActivity {
 
@@ -42,6 +45,12 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.btn_address)
     ToggleButton btnAddress;
 
+    private int[] icons = new int[]{R.drawable.shape_address_normal, R.drawable.shape_address_orange,
+            R.drawable.shape_address_blue, R.drawable.shape_address_gray, R.drawable.shape_address_green, };
+
+    private String[] names = new String[]{"Transparent", "Orange", "Blue", "Gray", "Green"};
+    private AddressDialog dialog;
+
     @Override
     protected void initData() {
 
@@ -63,25 +72,11 @@ public class SettingActivity extends BaseActivity {
             }
         });
 
-        rlAuto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnAutoUpdate.setChecked(!btnAutoUpdate.isChecked());
-                btnAutoUpdate.setBackgroundResource(btnAutoUpdate.isChecked() ? R.drawable.on : R.drawable.off);
+        initAutoUpdate();
 
-                SPUtils.putBoolean(SettingActivity.this, Contant.AUTO_UPDATE, btnAutoUpdate.isChecked());
-            }
-        });
+        initAddress();
 
-        rlAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnAddress.setChecked(!btnAddress.isChecked());
-                btnAddress.setBackgroundResource(btnAddress.isChecked() ? R.drawable.on : R.drawable.off);
-
-                SPUtils.putBoolean(SettingActivity.this, Contant.ADDRESS, btnAddress.isChecked());
-            }
-        });
+        initAddressStyle();
 
         rlBlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +86,64 @@ public class SettingActivity extends BaseActivity {
                 btnBlock.setBackgroundResource(btnBlock.isChecked() ? R.drawable.on : R.drawable.off);
 
                 SPUtils.putBoolean(SettingActivity.this, Contant.BLOCK, btnBlock.isChecked());
+            }
+        });
+    }
+
+    private void initAddressStyle() {
+        rlAddressStyle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new AddressDialog(SettingActivity.this);
+                dialog.setAdpater(new AddressStyleAdapter());
+                dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        SPUtils.putInt(SettingActivity.this, Contant.ADDRESS_STYLE, icons[position]);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+    }
+
+    private void initAddress() {
+
+        rlAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(ServiceStatusUtils.isServiceRunning(SettingActivity.this, AddressService.class)){
+                    btnAddress.setChecked(false);
+                    btnAddress.setBackgroundResource(R.drawable.off);
+                    stopService(new Intent(getApplicationContext(), AddressService.class));
+                } else {
+                    btnAddress.setChecked(true);
+                    btnAddress.setBackgroundResource(R.drawable.on);
+                    startService(new Intent(getApplicationContext(), AddressService.class));
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        boolean isRunning = ServiceStatusUtils.isServiceRunning(getApplicationContext(), AddressService.class);
+        btnAddress.setChecked(isRunning);
+        btnAddress.setBackgroundResource(isRunning ? R.drawable.on : R.drawable.off);
+    }
+
+    private void initAutoUpdate() {
+        rlAuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnAutoUpdate.setChecked(!btnAutoUpdate.isChecked());
+                btnAutoUpdate.setBackgroundResource(btnAutoUpdate.isChecked() ? R.drawable.on : R.drawable.off);
+
+                SPUtils.putBoolean(SettingActivity.this, Contant.AUTO_UPDATE, btnAutoUpdate.isChecked());
             }
         });
     }
@@ -115,6 +168,44 @@ public class SettingActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_setting;
+    }
+
+    class AddressStyleAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return icons.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return icons[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = View.inflate(SettingActivity.this, R.layout.item_address,null);
+
+            ImageView ivIcon = view.findViewById(R.id.iv_icon);
+            TextView tvName = view.findViewById(R.id.tv_name);
+            ImageView ivSelect = view.findViewById(R.id.iv_select);
+
+            ivIcon.setBackgroundResource(icons[position]);
+            tvName.setText(names[position]);
+            ivSelect.setVisibility(View.INVISIBLE);
+
+            int selectedItem = SPUtils.getInt(SettingActivity.this, Contant.ADDRESS_STYLE, R.drawable.shape_address_normal);
+            if(selectedItem == icons[position]){
+                ivSelect.setVisibility(View.VISIBLE);
+            }
+
+            return view;
+        }
     }
 
 }

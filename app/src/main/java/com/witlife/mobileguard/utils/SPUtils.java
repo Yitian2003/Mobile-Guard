@@ -38,4 +38,14 @@ public class SPUtils {
         sp = context.getSharedPreferences(Contant.CONFIGURE, Context.MODE_PRIVATE);
         sp.edit().remove(key).commit();
     }
+
+    public static void putInt(Context context, String key, int value) {
+        sp = context.getSharedPreferences(Contant.ADDRESS_STYLE, Context.MODE_PRIVATE);
+        sp.edit().putInt(key, value).commit();
+    }
+
+    public static int getInt(Context context, String key, int defValue){
+        sp = context.getSharedPreferences(Contant.ADDRESS_STYLE, Context.MODE_PRIVATE);
+        return sp.getInt(key, defValue);
+    }
 }

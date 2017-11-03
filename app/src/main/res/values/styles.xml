@@ -77,4 +77,17 @@
         <item name="android:onClick">prePage</item>
     </style>
 
+    <!-- address style-->
+    <style name="AddressDialogStyle" parent="Theme.AppCompat.Dialog">
+        <!--remove title-->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowAnimationStyle">@style/AddressAnimStyle</item>
+    </style>
+
+    <style name="AddressAnimStyle" >
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_exit</item>
+    </style>
+
 </resources>

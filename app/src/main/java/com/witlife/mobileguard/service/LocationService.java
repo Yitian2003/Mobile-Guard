@@ -62,13 +62,13 @@ public class LocationService extends Service {
         locationManager.requestLocationUpdates(bestProvider, 60000, 60, listener);
     }
 
-   /* @Override
+    @Override
     public void onDestroy() {
 
         super.onDestroy();
         locationManager.removeUpdates(listener);
         listener = null;
-    }*/
+    }
 
     private class MyLoccationListener implements LocationListener{
         @Override

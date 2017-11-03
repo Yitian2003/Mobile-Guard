@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +44,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 public class SplashActivity extends AppCompatActivity {
@@ -112,6 +111,8 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             toMain();
         }
+
+        copyDb("address.db");
     }
 
     private void updateApk() {
@@ -319,5 +320,38 @@ public class SplashActivity extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
     }
 
+    private void copyDb(String fileName){// copy database
 
+        InputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        File filesDir = getFilesDir();
+        File desFile = new File(filesDir, fileName);
+
+        if(!desFile.exists()){
+            AssetManager assetManager = getAssets();
+            try {
+                inputStream = assetManager.open(fileName);
+                outputStream = new FileOutputStream(desFile);
+
+                byte[] buffer = new byte[1024 * 8];
+                int len = 0;
+
+                while ((len = inputStream.read(buffer)) != -1){
+                    outputStream.write(buffer, 0, len);
+                }
+                outputStream.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    inputStream.close();
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 }

@@ -45,6 +45,15 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
     protected void initTitle() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("Advanced Tools");
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                removeCurrentActivity();
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -56,6 +65,7 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_address:
+
                 startActivity(new Intent(this, SearchAddressActivity.class));
                 break;
         }

@@ -1,15 +1,20 @@
 package com.witlife.mobileguard.adpater;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.witlife.mobileguard.R;
+import com.witlife.mobileguard.activity.TelecomSafeActivity;
 import com.witlife.mobileguard.bean.BlockListBean;
+import com.witlife.mobileguard.db.dao.BlackNumberDao;
 
 import java.util.ArrayList;
 
@@ -66,7 +71,7 @@ public class BlockListAdapter extends BaseAdapter {
         }
 
 
-        BlockListBean listBean = listBeans.get(position);
+        final BlockListBean listBean = listBeans.get(position);
 
         holder.tvNumber.setText(listBean.getNumber());
 
@@ -81,6 +86,30 @@ public class BlockListAdapter extends BaseAdapter {
                 holder.tvMode.setText("Block Callin & SMS");
                 break;
         }
+
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(context).setTitle("Delete Record")
+                        .setMessage("Do you want to delete " + listBean.getNumber() + " ?")
+                        .setNegativeButton("No", null)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (BlackNumberDao.getInstance(context).delete(listBean.getNumber())){
+                                    Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
+
+                                    listBeans.remove(listBean);
+                                    notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(context, "Delete Fail!", Toast.LENGTH_SHORT).show();
+                                }
+                                dialog.dismiss();
+
+                            }
+                        }).show();
+            }
+        });
 
         return convertView;
     }

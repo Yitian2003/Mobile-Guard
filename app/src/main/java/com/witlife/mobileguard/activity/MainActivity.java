@@ -107,9 +107,17 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case 0:// mobile security
                 doSecurity();
                 break;
+            case 1: // telecom safe
+                doTelecom();
+                break;
             case 7:
                 advancedTools();
+                break;
         }
+    }
+
+    private void doTelecom() {
+        startActivity(new Intent(this, TelecomSafeActivity.class));
     }
 
     private void advancedTools() {

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.witlife.mobileguard.bean.BlockListBean;
 import com.witlife.mobileguard.db.BlackNumberOpenHelper;
@@ -138,6 +139,7 @@ public class BlackNumberDao {
         Cursor cursor = db.rawQuery("select number, mode from blacknumber order by _id desc limit ?, 10", new String[]{index + ""});
 
         if(cursor != null){
+            Log.d("cursor------", cursor.toString());
 
             while(cursor.moveToNext()){
                 String number = cursor.getString(0);

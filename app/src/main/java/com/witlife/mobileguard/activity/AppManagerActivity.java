@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
@@ -254,6 +255,12 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.tv_info:
+
+                Uri uri = Uri.parse("package:" + currentInfo.getPackageName());
+                Intent inforIntent = new Intent();
+                inforIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                inforIntent.setData(uri);
+                startActivity(inforIntent);
                 break;
         }
 
@@ -353,9 +360,9 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
                 AppInfoBean appInfoBean = intalledAppsList.get(position);
 
                 if (position == 0) {
-                    holder.tvTitle.setText(appInfoBean.getTitle() + "(" + userAppList.size() + ")");
+                    holder.tvItemTitle.setText(appInfoBean.getTitle() + "(" + userAppList.size() + ")");
                 } else {
-                    holder.tvTitle.setText(appInfoBean.getTitle() + "(" + systemAppList.size() + ")");
+                    holder.tvItemTitle.setText(appInfoBean.getTitle() + "(" + systemAppList.size() + ")");
                 }
 
             }
@@ -380,8 +387,8 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
 
         class TitleViewHolder {
 
-            @BindView(R.id.tv_title)
-            TextView tvTitle;
+            @BindView(R.id.tv_item_title)
+            TextView tvItemTitle;
 
             TitleViewHolder(View view) {
                 ButterKnife.bind(this, view);

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MobileGuard</string>
+    <string name="accessibility_service_label">MobileGuard Accessibility Service</string>
+    <string name="accessibility_service_description">Turn on lock app function, set private to your app.</string>
 
     <array name="main_grid_title">
         <item>
@@ -9,10 +11,10 @@
             Telecom Safe
         </item>
         <item>
-            App Manage
+            App Manager
         </item>
         <item>
-            Thread Manage
+            Process Manager
         </item>
         <item>
             Data Analysis

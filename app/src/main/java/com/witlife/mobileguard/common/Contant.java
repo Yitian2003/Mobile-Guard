@@ -22,4 +22,9 @@ public class Contant {
     public static final String ENABLE_PROTECT = "enable_protect";
 
     public static final String ADDRESS_STYLE = "address_style";
+
+    public static final String SHOW_SYSTEM = "show_system";
+
+    public static final String ACTION_SKIP_PACKAGE = "com.witlife.mobileguard" +
+            ".ACTION_SKIP_PACKAGE";;
 }

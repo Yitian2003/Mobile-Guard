@@ -147,7 +147,7 @@ public class TelecomSafeActivity extends BaseActivity {
 
     private void autoShowList() {
         blackNumberDao = BlackNumberDao.getInstance(TelecomSafeActivity.this);
-        llLoading.setVisibility(View.VISIBLE);
+        findViewById(R.id.ll_loading).setVisibility(View.VISIBLE);
         isLoading = true;
 
         new Thread(new Runnable() {
@@ -163,9 +163,9 @@ public class TelecomSafeActivity extends BaseActivity {
                     public void run() {
                         adapter.notifyDataSetChanged();
                         llLoading.setVisibility(View.GONE);
-                        if (listBeans.size() <= 0) {
+                        /*if (listBeans.size() <= 0) {
                             ivEmpty.setVisibility(View.VISIBLE);
-                        }
+                        }*/
                     }
                 });
             }

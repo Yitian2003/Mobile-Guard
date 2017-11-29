@@ -1,6 +1,8 @@
 package com.witlife.mobileguard.engine;
 
 import android.app.ActivityManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -9,16 +11,22 @@ import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ServiceInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Debug;
 
+import com.jaredrummler.android.processes.AndroidProcesses;
+import com.jaredrummler.android.processes.models.AndroidAppProcess;
 import com.witlife.mobileguard.R;
 import com.witlife.mobileguard.bean.ProcessInfoBean;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Created by bruce on 7/11/2017.
@@ -123,48 +131,86 @@ public class ProcessInfoProvider {
 
     public static List<ProcessInfoBean> getRunningProcesses(Context context){
 
+        List<ProcessInfoBean> list = new ArrayList<>();
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
-
         PackageManager packageManager = context.getPackageManager();
 
-        List<ProcessInfoBean> list = new ArrayList<>();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
 
-        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
-            String packageName = runningAppProcess.processName; // default process is package name
-            ProcessInfoBean infoBean = new ProcessInfoBean();
-            infoBean.setPackageName(packageName);
+            List<AndroidAppProcess> runningAppProcesses = AndroidProcesses.getRunningAppProcesses();
 
-            Debug.MemoryInfo[] processMemoryInfo = am.getProcessMemoryInfo(new int[]{runningAppProcess.pid});
-            long memory = processMemoryInfo[0].getTotalPrivateDirty() * 1024;
-            infoBean.setMemory(memory);
+            for (AndroidAppProcess runningAppProcess : runningAppProcesses) {
 
-            try {
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                ProcessInfoBean infoBean = new ProcessInfoBean();
+                String packageName = runningAppProcess.getPackageName();
+                infoBean.setPackageName(packageName);
 
-                String name = applicationInfo.loadLabel(packageManager).toString();
-                Drawable icon = applicationInfo.loadIcon(packageManager);
+                try {
+                    Debug.MemoryInfo[] processMemoryInfo = am.getProcessMemoryInfo(new int[]{runningAppProcess.stat().getPid()});
+                    long memory = processMemoryInfo[0].getTotalPrivateDirty() * 1024;
+                    infoBean.setMemory(memory);
 
-                infoBean.setName(name);
-                infoBean.setIcon(icon);
+                    ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
 
-                int flags = applicationInfo.flags;
+                    String name = applicationInfo.loadLabel(packageManager).toString();
+                    Drawable icon = applicationInfo.loadIcon(packageManager);
 
-                if((flags & ApplicationInfo.FLAG_SYSTEM) > 0){
-                    infoBean.setUserProcess(false);
-                } else {
-                    infoBean.setUserProcess(true);
+                    infoBean.setName(name);
+                    infoBean.setIcon(icon);
+
+                    int flags = applicationInfo.flags;
+
+                    if((flags & ApplicationInfo.FLAG_SYSTEM) > 0){
+                        infoBean.setUserProcess(false);
+                    } else {
+                        infoBean.setUserProcess(true);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-
-                infoBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
-                infoBean.setName(packageName);
-                infoBean.setUserProcess(false);
+                list.add(infoBean);
             }
 
-            list.add(infoBean);
+        } else {
+            List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+
+            for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+                String packageName = runningAppProcess.processName; // default process is package name
+                ProcessInfoBean infoBean = new ProcessInfoBean();
+                infoBean.setPackageName(packageName);
+
+                Debug.MemoryInfo[] processMemoryInfo = am.getProcessMemoryInfo(new int[]{runningAppProcess.pid});
+                long memory = processMemoryInfo[0].getTotalPrivateDirty() * 1024;
+                infoBean.setMemory(memory);
+
+                try {
+                    ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+
+                    String name = applicationInfo.loadLabel(packageManager).toString();
+                    Drawable icon = applicationInfo.loadIcon(packageManager);
+
+                    infoBean.setName(name);
+                    infoBean.setIcon(icon);
+
+                    int flags = applicationInfo.flags;
+
+                    if((flags & ApplicationInfo.FLAG_SYSTEM) > 0){
+                        infoBean.setUserProcess(false);
+                    } else {
+                        infoBean.setUserProcess(true);
+                    }
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+
+                    infoBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    infoBean.setName(packageName);
+                    infoBean.setUserProcess(false);
+                }
+
+                list.add(infoBean);
+            }
         }
         return list;
     }

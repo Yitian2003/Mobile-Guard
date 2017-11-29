@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.witlife.mobileguard.R;
+import com.witlife.mobileguard.service.ApplockService;
+import com.witlife.mobileguard.utils.ServiceStatusUtils;
 import com.witlife.mobileguard.utils.SmsUtils;
 
 import java.io.File;
@@ -40,8 +43,8 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
     RelativeLayout rlLockerMager;
     @BindView(R.id.btn_locker)
     ToggleButton btnLocker;
-    @BindView(R.id.rl_turn_on)
-    RelativeLayout rlTurnOn;
+    @BindView(R.id.rl_applock_service)
+    RelativeLayout rlApplockService;
 
     @Override
     protected void initData() {
@@ -49,6 +52,8 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
         rlPhone.setOnClickListener(this);
         rlBackupSms.setOnClickListener(this);
         rlRestoreSms.setOnClickListener(this);
+        rlLockerMager.setOnClickListener(this);
+        rlApplockService.setOnClickListener(this);
     }
 
     @Override
@@ -75,9 +80,9 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_address:
-
                 startActivity(new Intent(this, SearchAddressActivity.class));
                 break;
+
             case R.id.rl_phone:
                 startActivity(new Intent(this, CommonNumberActivity.class));
                 break;
@@ -85,11 +90,28 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
             case R.id.rl_backup_sms:
                 smsBackup();
                 break;
-            case R.id.rl_restore_sms:
 
+            case R.id.rl_restore_sms:
                 smsRestore();
                 break;
+
+            case R.id.rl_locker_mager:
+                startActivity(new Intent(this, LockerManagerActivity.class));
+                break;
+
+            case R.id.rl_applock_service:
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, ApplockService.class);
+        btnLocker.setChecked(serviceRunning);
+        btnLocker.setBackgroundResource(serviceRunning ? R.drawable.on : R.drawable.off);
     }
 
     private void smsRestore() {
@@ -187,17 +209,4 @@ public class AdvancedToolsActivity extends BaseActivity implements View.OnClickL
             Toast.makeText(this, "Can't find SdCard", Toast.LENGTH_SHORT).show();
         }
     }
-
-    /*class SmsCallbackImpl implements SmsUtils.OnSmsCallback{
-
-        @Override
-        public void onGetTotalCount(int totalCount) {
-
-        }
-
-        @Override
-        public void onProgress(int progress) {
-
-        }
-    }*/
 }

@@ -110,10 +110,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case 1: // telecom safe
                 doTelecom();
                 break;
+            case  2:
+                doAppManager();
+                break;
+            case 3:
+                doProcessManager();
+                break;
             case 7:
                 advancedTools();
                 break;
         }
+    }
+
+    private void doProcessManager() {
+        startActivity(new Intent(this, ProcessManagerActivity.class));
+    }
+
+    private void doAppManager() {
+        startActivity(new Intent(this, AppManagerActivity.class));
     }
 
     private void doTelecom() {

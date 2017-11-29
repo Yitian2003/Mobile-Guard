@@ -3,9 +3,9 @@
 
     android:shareInterpolator="false">
     <alpha android:fromAlpha="0.0" android:toAlpha="1.0"
-        android:duration="500"/>
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:duration="300"/>
 
-    <translate android:fromXDelta="70%" android:toXDelta="0"
-        android:interpolator="@android:anim/overshoot_interpolator"
-        android:duration="500"/>
+    <translate android:fromXDelta="150%" android:toXDelta="0"
+        android:duration="300"/>
 </set>

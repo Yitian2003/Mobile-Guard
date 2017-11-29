@@ -2,10 +2,10 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:shareInterpolator="false">
-    <alpha android:fromAlpha="0.0" android:toAlpha="1.0"
+    <alpha android:fromAlpha="1.0" android:toAlpha="0.0"
         android:duration="500"/>
 
-    <translate android:fromXDelta="70%" android:toXDelta="0"
-        android:interpolator="@android:anim/overshoot_interpolator"
+    <translate android:fromXDelta="0" android:toXDelta="150%"
+        android:interpolator="@android:anim/anticipate_interpolator"
         android:duration="500"/>
 </set>

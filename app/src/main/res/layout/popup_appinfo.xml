@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pop_bg"
+    android:orientation="horizontal"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp">
+
+
+    <TextView
+        android:id="@+id/tv_uninstall"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:drawablePadding="3dp"
+        android:drawableTop="@drawable/ic_uninstall"
+        android:text="Uninstall"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_open"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:drawablePadding="3dp"
+        android:drawableTop="@drawable/ic_open"
+        android:text="Open"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:drawablePadding="3dp"
+        android:drawableTop="@drawable/ic_share"
+        android:text="Share"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="3dp"
+        android:drawableTop="@drawable/ic_info"
+        android:text="Info"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+</LinearLayout>

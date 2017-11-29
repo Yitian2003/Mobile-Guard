@@ -113,6 +113,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         copyDb("address.db");
+        copyDb("commonnum.db");
     }
 
     private void updateApk() {

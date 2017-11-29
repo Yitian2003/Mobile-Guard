@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 import com.witlife.mobileguard.R;
 import com.witlife.mobileguard.common.Contant;
 import com.witlife.mobileguard.service.AddressService;
+import com.witlife.mobileguard.service.BlockService;
 import com.witlife.mobileguard.utils.SPUtils;
 import com.witlife.mobileguard.utils.ServiceStatusUtils;
 import com.witlife.mobileguard.view.AddressDialog;
@@ -82,8 +83,18 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                btnBlock.setChecked(!btnBlock.isChecked());
-                btnBlock.setBackgroundResource(btnBlock.isChecked() ? R.drawable.on : R.drawable.off);
+                //btnBlock.setChecked(!btnBlock.isChecked());
+                //btnBlock.setBackgroundResource(btnBlock.isChecked() ? R.drawable.on : R.drawable.off);
+
+                if(ServiceStatusUtils.isServiceRunning(SettingActivity.this, BlockService.class)){
+                    btnBlock.setBackgroundResource(R.drawable.off);
+                    btnBlock.setChecked(false);
+                    stopService(new Intent(SettingActivity.this, BlockService.class));
+                } else {
+                    btnBlock.setChecked(true);
+                    btnBlock.setBackgroundResource(R.drawable.on);
+                    startService(new Intent(SettingActivity.this, BlockService.class));
+                }
 
                 SPUtils.putBoolean(SettingActivity.this, Contant.BLOCK, btnBlock.isChecked());
             }
@@ -131,9 +142,14 @@ public class SettingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        boolean isRunning = ServiceStatusUtils.isServiceRunning(getApplicationContext(), AddressService.class);
-        btnAddress.setChecked(isRunning);
-        btnAddress.setBackgroundResource(isRunning ? R.drawable.on : R.drawable.off);
+        boolean isAddressRunning = ServiceStatusUtils.isServiceRunning(getApplicationContext(), AddressService.class);
+        btnAddress.setChecked(isAddressRunning);
+        btnAddress.setBackgroundResource(isAddressRunning ? R.drawable.on : R.drawable.off);
+
+        boolean isBlockRunning = ServiceStatusUtils.isServiceRunning(getApplicationContext(), AddressService.class);
+        btnBlock.setChecked(isBlockRunning);
+        btnBlock.setBackgroundResource(isBlockRunning ? R.drawable.on : R.drawable.off);
+
     }
 
     private void initAutoUpdate() {

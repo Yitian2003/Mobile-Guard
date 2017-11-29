@@ -125,9 +125,11 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <activity android:name=".activity.EnterPasswordActivity"
-            android:launchMode="singleInstance"
-            android:excludeFromRecents="true"/>
+        <activity
+            android:name=".activity.EnterPasswordActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance" />
+        <activity android:name=".activity.TrafficStatsActivity"></activity>
     </application>
 
 </manifest>

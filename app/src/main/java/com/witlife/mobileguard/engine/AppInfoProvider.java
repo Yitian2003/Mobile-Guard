@@ -30,6 +30,8 @@ public class AppInfoProvider {
             String name = packageInfo.applicationInfo.loadLabel(pm).toString();// application name
             Drawable icon = packageInfo.applicationInfo.loadIcon(pm); // application icon
 
+            int uid = packageInfo.applicationInfo.uid;
+
             String sourceDir = packageInfo.applicationInfo.sourceDir;
             File file = new File(sourceDir);
             long size = file.length(); // application size
@@ -39,6 +41,7 @@ public class AppInfoProvider {
             appInfoBean.setPackageName(packageName);
             appInfoBean.setSize(size);
             appInfoBean.setIcon(icon);
+            appInfoBean.setUid(uid);
 
             int flags = packageInfo.applicationInfo.flags;
             if ((flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) > 0){

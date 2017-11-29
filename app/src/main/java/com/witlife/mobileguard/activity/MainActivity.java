@@ -116,10 +116,17 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case 3:
                 doProcessManager();
                 break;
+            case 4:
+                doTrafficManager();
+                break;
             case 7:
                 advancedTools();
                 break;
         }
+    }
+
+    private void doTrafficManager() {
+        startActivity(new Intent(this, TrafficStatsActivity.class));
     }
 
     private void doProcessManager() {

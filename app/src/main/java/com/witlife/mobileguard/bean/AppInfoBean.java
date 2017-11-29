@@ -19,6 +19,10 @@ public class AppInfoBean {
     private boolean isTitle;
     private String title;
 
+    private long receiveSize;
+    private long sendSize;
+    private int uid;
+
     public boolean isTitle() {
         return isTitle;
     }
@@ -82,5 +86,29 @@ public class AppInfoBean {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public long getReceiveSize() {
+        return receiveSize;
+    }
+
+    public void setReceiveSize(long receiveSize) {
+        this.receiveSize = receiveSize;
+    }
+
+    public long getSendSize() {
+        return sendSize;
+    }
+
+    public void setSendSize(long sendSize) {
+        this.sendSize = sendSize;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

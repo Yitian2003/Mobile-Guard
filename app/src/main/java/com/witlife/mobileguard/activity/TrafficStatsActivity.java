@@ -2,7 +2,8 @@ package com.witlife.mobileguard.activity;
 
 import android.net.TrafficStats;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.witlife.mobileguard.R;
 import com.witlife.mobileguard.bean.AppInfoBean;
 import com.witlife.mobileguard.engine.AppInfoProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,12 +31,14 @@ public class TrafficStatsActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.iv_other)
     ImageView ivOther;
-    @BindView(R.id.listView)
-    ListView listView;
+    /*@BindView(R.id.listView)
+    ListView listView;*/
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     @BindView(R.id.ll_loading)
     LinearLayout llLoading;
 
-    private List<AppInfoBean> installedApps;
+    private List<AppInfoBean> installedAppsWithTraffic;
 
     @Override
     protected void initData() {
@@ -61,13 +65,20 @@ public class TrafficStatsActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            installedApps = AppInfoProvider.getInstalledApps(TrafficStatsActivity.this);
+
+            List<AppInfoBean> installedApps = AppInfoProvider.getInstalledApps(TrafficStatsActivity.this);
+
+            installedAppsWithTraffic = new ArrayList<>();
 
             for (AppInfoBean installedApp : installedApps) {
                 long uidRxBytes = TrafficStats.getUidRxBytes(installedApp.getUid()); // receive traffic for app
                 long uidTxBytes = TrafficStats.getUidTxBytes(installedApp.getUid()); // send traffic for app*/
                 installedApp.setReceiveSize(uidRxBytes);
                 installedApp.setSendSize(uidTxBytes);
+
+                if(installedApp.getReceiveSize() > 0 || installedApp.getSendSize() > 0){
+                    installedAppsWithTraffic.add(installedApp);
+                }
             }
             return null;
         }
@@ -77,7 +88,11 @@ public class TrafficStatsActivity extends BaseActivity {
             super.onPostExecute(aVoid);
 
             llLoading.setVisibility(View.GONE);
-            listView.setAdapter(new TrafficAdapter());
+
+            recyclerView.setAdapter(new TrafficRecyclerAdapter());
+            recyclerView.setLayoutManager(new LinearLayoutManager(TrafficStatsActivity.this));
+            //listView.setAdapter(new TrafficAdapter());
+
         }
     }
 
@@ -101,12 +116,12 @@ public class TrafficStatsActivity extends BaseActivity {
     class TrafficAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return installedApps.size();
+            return installedAppsWithTraffic.size();
         }
 
         @Override
         public AppInfoBean getItem(int position) {
-            return installedApps.get(position);
+            return installedAppsWithTraffic.get(position);
         }
 
         @Override
@@ -118,7 +133,7 @@ public class TrafficStatsActivity extends BaseActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             ViewHolder holder = null;
-            AppInfoBean item = installedApps.get(position);
+            AppInfoBean item = installedAppsWithTraffic.get(position);
 
             if (convertView == null) {
                 convertView = View.inflate(TrafficStatsActivity.this, R.layout.item_traffic, null);
@@ -151,6 +166,59 @@ public class TrafficStatsActivity extends BaseActivity {
             ViewHolder(View view) {
                 ButterKnife.bind(this, view);
             }
+        }
+    }
+
+    class TrafficRecyclerAdapter extends RecyclerView.Adapter<TrafficViewHolder> {
+
+        @Override
+        public TrafficViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View view = View.inflate(TrafficStatsActivity.this, R.layout.item_traffic, null);
+
+            TrafficViewHolder holder = new TrafficViewHolder(view);
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(TrafficViewHolder holder, int position) {
+            AppInfoBean item = installedAppsWithTraffic.get(position);
+
+            holder.ivIcon.setImageDrawable(item.getIcon());
+            holder.tvName.setText(item.getName());
+            holder.tvReceive.setText("Received: " + Formatter.formatFileSize(TrafficStatsActivity.this, item.getReceiveSize()));
+            holder.tvSend.setText("Send: " + Formatter.formatFileSize(TrafficStatsActivity.this, item.getSendSize()));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return installedAppsWithTraffic.size();
+        }
+    }
+
+    static class  TrafficViewHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.iv_icon)
+        ImageView ivIcon;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_receive)
+        TextView tvReceive;
+        @BindView(R.id.tv_send)
+        TextView tvSend;
+
+        public TrafficViewHolder(View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -114,6 +114,7 @@ public class SplashActivity extends AppCompatActivity {
 
         copyDb("address.db");
         copyDb("commonnum.db");
+        copyDb("antivirus.db");
     }
 
     private void updateApk() {

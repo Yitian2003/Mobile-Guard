@@ -129,7 +129,8 @@
             android:name=".activity.EnterPasswordActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance" />
-        <activity android:name=".activity.TrafficStatsActivity"></activity>
+        <activity android:name=".activity.TrafficStatsActivity" />
+        <activity android:name=".activity.AntiVirusActivity"></activity>
     </application>
 
 </manifest>
